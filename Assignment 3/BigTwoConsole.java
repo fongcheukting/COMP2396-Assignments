@@ -112,8 +112,7 @@ public class BigTwoConsole {
 			}
 		}
 		System.out.println("<Table>");
-		Hand lastHandOnTable = (handsOnTable.isEmpty()) ? null : handsOnTable
-				.get(handsOnTable.size() - 1);
+		Hand lastHandOnTable = (handsOnTable.isEmpty()) ? null : handsOnTable.get(handsOnTable.size() - 1);
 		if (lastHandOnTable != null) {
 			System.out.print("    <" + lastHandOnTable.getPlayer().getName()
 					+ "> {" + lastHandOnTable.getType() + "} ");
