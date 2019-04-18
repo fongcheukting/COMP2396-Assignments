@@ -317,24 +317,34 @@ public class BigTwoTable implements CardGameTable{
 		 */
 		public void paintComponent(Graphics g)
 		{
-			
+			// assigning color to background and the color for the text and the lines
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D) g;
 			this.setBackground(Color.GREEN.darker().darker().darker());
 			g.setColor(Color.WHITE);
 			int playerCounter = 0;
 			
+			//painting the four players avatars and their cards
 			while(playerCounter<4) {
-				g.drawString("Player "+playerCounter, nameXCoord , nameYCoord + 160*playerCounter); 
+				if(activePlayer==playerCounter) {
+					g.setColor(Color.BLUE);
+					g.drawString("Player "+playerCounter, nameXCoord , nameYCoord + 160*playerCounter); 
+				}
+				else {
+					g.drawString("Player "+playerCounter, nameXCoord , nameYCoord + 160*playerCounter); 
+				}
+				g.setColor(Color.WHITE);
 				g.drawImage(avatars[playerCounter], avatarXCoord, avatarYCoord + 160*playerCounter, this);
 			    g2.drawLine(0, lineXCoord*(playerCounter+1), lineYCoord, lineXCoord*(playerCounter+1));
 
+			    //cards shown if players is active
 			    if (activePlayer == playerCounter) 
 			    {
 			    	for (int i = 0; i < game.getPlayerList().get(playerCounter).getNumOfCards(); i++) 
 			    	{
 			    		int suit = getSuitofPlayer(playerCounter, i);
 			    		int rank = getRankofPlayer(playerCounter, i);
+			    		//if selected then painted in a raised fashion otherwise painted normally
 			    		if (selected[i])
 			    		{
 			    			g.drawImage(cardImages[suit][rank], cardXCoord+cardWidth*i, upCardYCoord+cardIncrement*playerCounter, this);
@@ -345,6 +355,7 @@ public class BigTwoTable implements CardGameTable{
 			    		}		
 			    	}
 			    } 
+			    //cards not shown if player is not active
 			    else
 			    {
 			    	for (int i = 0; i < game.getPlayerList().get(playerCounter).getCardsInHand().size(); i++)
@@ -355,8 +366,10 @@ public class BigTwoTable implements CardGameTable{
 				playerCounter++;
 			}
 		    
+			//drawing the part which shows the previous hand played and its type
 		    g.drawString("Last Hand on Table", 10, 660);
 		     
+		    //checking if hands are empty or not
 		    if (!game.getHandsOnTable().isEmpty())
 		    {
 		    	int sizeofHands = game.getHandsOnTable().size();
@@ -469,7 +482,13 @@ public class BigTwoTable implements CardGameTable{
 		@Override
 		public void actionPerformed(ActionEvent e) 
 		{
+			if (getSelected() == null)
+			{
+				printMsg("Select cards to play.\n");
+			}
+			else {
 			game.makeMove(activePlayer, getSelected());
+			}
 			repaint();
 		}
 		
